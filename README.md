@@ -19,3 +19,11 @@
 ## Postman Collection:
 
 https://www.getpostman.com/collections/13bff5135925a9468db0
+
+## Frontend Code
+
+https://github.com/qasimmehdi/ems-frontend
+
+## Hosted Frontend
+
+https://qasimmehdi.github.io/ems-frontend
