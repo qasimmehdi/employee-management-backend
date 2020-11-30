@@ -12,13 +12,14 @@ export const login = async ({ request, response }: Context) => {
     const body = await request.body().value;
     const { email, password } = body;
     console.log(email, password);
-    const employee = await employees.findOne({ email: email, password: password });
+    let employee = await employees.findOne({ email: email, password: password });
     console.log(employee);
     if (employee) {
+        delete employee.password;
         const payload: Payload = {
             role: 'employee',
             id: employee._id.$oid,
-            exp: getNumericDate(600),
+            exp: getNumericDate(6000),
         };
         const header: Header = {
             alg: "HS256",
@@ -43,12 +44,13 @@ export const login = async ({ request, response }: Context) => {
         return;
     }
     else {
-        const admin = await admins.findOne({ email: email, password: password });
+        let admin = await admins.findOne({ email: email, password: password });
         if (admin) {
+        delete admin.password;
             const payload: Payload = {
                 role: 'admin',
                 id: admin._id.$oid,
-                exp: getNumericDate(600),
+                exp: getNumericDate(6000),
             };
             const header: Header = {
                 alg: "HS256",

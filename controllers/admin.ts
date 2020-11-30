@@ -19,6 +19,14 @@ export const addAdmin = async ({ request, response }: Context) => {
         const admin: Admin = await body.value;
         admin.role = "admin";
         console.info(admin);
+        const duplicate = await admins.findOne({ email: admin.email });
+        if (duplicate) {
+            response.status = 409;
+            response.body = {
+                message: 'Email already exists'
+            }
+            return;
+        }
         const resp = await admins.insertOne(admin);
         console.info(resp);
         response.body = {

@@ -18,6 +18,14 @@ export const addEmployee = async ({ request, response }: Context) => {
     const employee: Employee = await body.value;
     employee.role = "employee";
     console.info(employee);
+    const duplicate = await employees.findOne({email: employee.email});
+    if(duplicate){
+      response.status = 409;
+      response.body = {
+        message: 'Email already exists'
+      }
+      return;
+    }
     const resp = await employees.insertOne(employee);
     console.info(resp);
     response.body = {
@@ -73,11 +81,18 @@ export const updateEmployee = async ({
   params,
 }: Context | any) => {
   try {
-    const body = await request.body().value
-    const { id } = params
-    const fetchedFriend = await employees.findOne({ _id: { $oid: id } })
-
-    if (fetchedFriend) {
+    const body = await request.body().value;
+    const { id } = params;
+    const duplicate = await employees.findOne({ email: body.email });
+    if (duplicate) {
+      response.status = 409;
+      response.body = {
+        message: 'Email already exists'
+      }
+      return;
+    }
+    const fetchedEmployee = await employees.findOne({ _id: { $oid: id } });
+    if (fetchedEmployee) {
       const { matchedCount } = await employees.updateOne(
         { _id: { $oid: id } },
         { $set: { ...body } }
