@@ -27,3 +27,5 @@ https://github.com/qasimmehdi/ems-frontend
 ## Hosted Frontend
 
 https://qasimmehdi.github.io/ems-frontend
+email: admin@a.com
+password: 123
